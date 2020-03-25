@@ -5,10 +5,7 @@
 #include "buttons.h"
 #include <libTimer.h>
 
-
-
 int main(){
-
   switch_init();
   configureClocks();/* setup master oscillator, CPU & peripheral clocks */
   led_init();
