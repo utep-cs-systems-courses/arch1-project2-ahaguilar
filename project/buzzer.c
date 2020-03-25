@@ -1,15 +1,8 @@
 #include <msp430.h>
-
 #include "libTimer.h"
-
 #include "buzzer.h"
 
-
-
-void buzzer_init()
-
-{
-
+void buzzer_init(){
   /* 
 
        Direct timer A output "TA0.1" to P2.6.  
