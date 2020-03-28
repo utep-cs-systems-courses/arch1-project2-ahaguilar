@@ -1,16 +1,17 @@
 #include <msp430.h>
+#include "libTimer.h"
+#include "led.h"
+#include "switches.h"
 #include "buzzer.h"
-#include "note_interrupt_handler.h"
-#include "warsBuzz.h"
-#include "buttons.h"
-#include <libTimer.h>
 
-int main(){
+
+int main(void){
+
+  configureClocks();
   switch_init();
-  configureClocks();/* setup master oscillator, CPU & peripheral clocks */
-  led_init();
   buzzer_init();
-  enableWDTInterrupts();/* enable wd timer */
-  or_sr(0x18);/* CPU off, GIE on */
+  led_init();
+  or_sr(0x18);          // CPU off, GIE on
 
+  return 0;
 }

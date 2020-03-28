@@ -8,20 +8,15 @@ LDFLAGS         = -L/opt/ti/msp430_gcc/include
 CC              = msp430-elf-gcc
 AS              = msp430-elf-as
 
-all: starWars.elf
+all: project2.elf
 
 #additional rules for files
-starWars.elf: ${COMMON_OBJECTS} main.o buzzer.o note_interrupt_handler.o warsBuzz.o buttons.o ../demos/lib/libTimer.a
+project2.elf: ${COMMON_OBJECTS} main.o buzzer.o p2_interrupt_handler.o state_machine.o led.o switches.o  ../demos/lib/libTimer.a
 	${CC} ${CFLAGS} ${LDFLAGS} -o $@ $^
 
 clean:
 	rm -f *.o *.elf
 
-load: starWars.elf
+load: project2.elf
 	mspdebug rf2500 "prog $^"
 
-main.o: buzzer.h
-buzzer.c: buzzer.h
-buttons.o: buttons.h buzzer.h warsBuzz.h
-warsBuzz.o:warsBuzz.h buzzer.h
-note_interrupt_handler.o: warsBuzz.h
