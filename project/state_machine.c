@@ -23,7 +23,7 @@ void state_advance() {
     buzzer_set_period(0);
     switch_state_down = 0;
   }
-  /* If switch 1 is pressed start playing La Bamba */
+  
   else if(!(p2val & SW1)){
     switch_state_down = 1;
   }
@@ -33,7 +33,6 @@ void state_advance() {
     starWarsTheme();
     switch_state_down = 1;
   }
-  /* If switch 3 is pressed start playing La Cucaracha */
   else if(!(p2val & SW3)){
     switch_state_down = 1;
   }
