@@ -2,6 +2,7 @@
 #include "libTimer.h"
 #include "buzzer.h"
 
+//Counter to keep track of the notes in the Star Wars Theme song
 static int counterStarWarsTheme = 0;
 
 void buzzer_init(){
@@ -19,6 +20,14 @@ void buzzer_init(){
   P2SEL |= BIT6;
   P2DIR = BIT6;/* enable output to speaker (P2.6) */
 }
+
+/*
+  starWarsTheme is a method which calls the buzzer_set_period method
+  from the buzzer.h file to produce the sound of the frequency specified on
+  each case. When the method is called, the song from the Star Wars
+  movie is played on the MSP430's speaker.
+*/
+
 void starWarsTheme(){
 
   switch(counterStarWarsTheme){
@@ -29,7 +38,7 @@ void starWarsTheme(){
   case 16:
   case 20:
   case 31:
-  case 32: buzzer_set_period(637); if(counterStarWarsTheme==32){ counterStarWarsTheme = 0; } else{ counterStarWarsTheme++;}; break;  // add some note here (1/(frequency #)/2); note G4
+  case 32: buzzer_set_period(637); if(counterStarWarsTheme==32){ counterStarWarsTheme = 0; } else{   counterStarWarsTheme++;}; break;  // add some note here (1/(frequency #)/2); 
   case  1:
   case  8:
   case 13:

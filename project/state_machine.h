@@ -7,5 +7,6 @@ void state_advance();
 void dim_led();         /* dim led */
 void delay();
 void toggle();
+void binary_counter();
 
 #endif // included

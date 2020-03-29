@@ -11,31 +11,35 @@ char switch_state_down, switch_state_changed;
 static char switch_update_interrupt_sense(){
 
   char p2val = P2IN;
+
   /* update switch interrupt to detect changes from current buttons */
-  P1IES |= (p2val & SWITCHES);  /* if switch up, sense down */
-  P1IES &= (p2val | ~SWITCHES); /* if switch down, sense up */
+  P1IES |= (p2val & SWITCHES);   /* if switch up, sense down */
+  P1IES &= (p2val | ~SWITCHES);  /* if switch down, sense up */
   return p2val;
 }
 
 void state_advance() {
   char p2val = switch_update_interrupt_sense();
+
   /* Initial State */
   if(p2val & SW1 && p2val & SW2 && p2val & SW3 && p2val & SW4){
     buzzer_set_period(0);
-    void toggle();    
     switch_state_down = 0;
   }
   
   else if(!(p2val & SW1)){
+    void toggle();
     switch_state_down = 1;
+    
   }
+  
   /* If switch 2 is pressed start playing the Star Wars Theme */
   else if(!(p2val & SW2)){
-    //Play Star Wars
-    starWarsTheme();
+    starWarsTheme();      /* Plays the star wars theme */
     switch_state_down = 1;
   }
   else if(!(p2val & SW3)){
+    void binary_counter();
     switch_state_down = 1;
   }
   /* If switch 4 is pressed music stops and dim red led */
@@ -106,5 +110,17 @@ void toggle() {
     green_on = 1;
     state    = 0;
     break;
+  }
+}
+void binary_counter(){
+  for(;;){
+    P1OUT = (BIT0 & BIT6);
+    __delay_cycles(1000000);
+    P1OUT = BIT6;
+    __delay_cycles(1000000);
+    P1OUT = BIT0;
+    __delay_cycles(1000000);
+    P1OUT = (BIT0 ^ BIT6);
+    __delay_cycles(1000000);
   }
 }
