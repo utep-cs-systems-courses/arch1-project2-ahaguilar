@@ -6,6 +6,6 @@ extern char switch_state_down, switch_state_changed; /* effectively boolean */
 void state_advance();
 void dim_led();         /* dim led */
 void delay();
-
+void toggle();
 
 #endif // included

@@ -7,6 +7,7 @@
 
 char switch_state_down, switch_state_changed;
 
+
 static char switch_update_interrupt_sense(){
 
   char p2val = P2IN;
@@ -21,6 +22,7 @@ void state_advance() {
   /* Initial State */
   if(p2val & SW1 && p2val & SW2 && p2val & SW3 && p2val & SW4){
     buzzer_set_period(0);
+    void toggle();    
     switch_state_down = 0;
   }
   
@@ -77,4 +79,32 @@ void delay(unsigned int t){          // Custom delay function
   unsigned int i;
   for(i = t; i > 0; i--)
     __delay_cycles(1);          // __delay_cycles accepts only constants !
+}
+
+void toggle() {
+  static char state = 0;
+  switch (state) {
+  case 0:
+    red_on   = 0;
+    green_on = 0;
+    state    = 1;
+    break;
+  case 1:
+    red_on   = 0;
+    green_on = 1;
+    state    = 2;
+    break;
+
+  case 2:
+    red_on   = 1;
+    green_on = 0;
+    state    = 3;
+    break;
+
+  case 3:
+    red_on   = 1;
+    green_on = 1;
+    state    = 0;
+    break;
+  }
 }

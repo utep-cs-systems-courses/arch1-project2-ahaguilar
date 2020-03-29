@@ -3,6 +3,8 @@
 #include "state_machine.h"
 #include "switches.h"
 
+unsigned char red_on = 0, green_on = 0;
+
 void led_init(){
   P1DIR |= LEDS;// bits attached to leds are output
   switch_state_changed = 1;
