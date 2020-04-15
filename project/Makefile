@@ -11,7 +11,7 @@ AS              = msp430-elf-as
 all: project2.elf
 
 #additional rules for files
-project2.elf: ${COMMON_OBJECTS} main.o buzzer.o p2_interrupt_handler.o state_machine.o led.o switches.o  ../demos/lib/libTimer.a
+project2.elf: ${COMMON_OBJECTS} main.o buzzer.o p2_interrupt_handler.o state_machine.o toggle.o led.o switches.o  ../demos/lib/libTimer.a
 	${CC} ${CFLAGS} ${LDFLAGS} -o $@ $^
 
 clean:

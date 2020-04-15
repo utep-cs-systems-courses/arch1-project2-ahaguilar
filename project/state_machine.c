@@ -6,8 +6,9 @@
 #include "libTimer.h"
 
 char switch_state_down, switch_state_changed;
+char switch0, switch1, switch2, switch3, switch4;
 
-
+extern void toggle();
 static char switch_update_interrupt_sense(){
 
   char p2val = P2IN;
@@ -18,45 +19,105 @@ static char switch_update_interrupt_sense(){
   return p2val;
 }
 
-void state_advance() {
+static char switch_option() {
   char p2val = switch_update_interrupt_sense();
-
+  char switchState = 0;
+  
   /* Initial State */
   if(p2val & SW1 && p2val & SW2 && p2val & SW3 && p2val & SW4){
+    switchState = 0;
+    return 0;
+  }
+  
+  else if (!(p2val & SW1)){
+    switchState = 1;
+    return 1;
+  }
+  
+  else if (!(p2val & SW2)){
+    switchState = 2;
+    return 2;
+  }
+  
+  else if (!(p2val & SW3)){
+    switchState = 3;
+    return 3;
+  }
+  
+  else if (!(p2val & SW4)){
+    switchState = 4;
+    return 4;
+  }
+  
+  else return 0;
+}
+
+void state_advance() {
+  char switchState = switch_option();
+  switch (switchState) {
+    // Initial State
+  case 0:
     buzzer_set_period(0);
     switch_state_down = 0;
-  }
-  
-  else if(!(p2val & SW1)){
-    void toggle();
-    switch_state_down = 1;
+    break;
     
-  }
-  
-  /* If switch 2 is pressed start playing the Star Wars Theme */
-  else if(!(p2val & SW2)){
-    starWarsTheme();      /* Plays the star wars theme */
+    // If switch 1 is pressed start playing La Bamba
+  case 1:
+    toggle();
     switch_state_down = 1;
-  }
-  else if(!(p2val & SW3)){
-    void binary_counter();
+    break;
+    // Plays star wars song
+  case 2:
+    starWarsTheme();
+    toggle();
+    // reset_state();
     switch_state_down = 1;
-  }
-  /* If switch 4 is pressed music stops and dim red led */
-  else if(!(p2val & SW4)){
+    break;
+
+  case 3:
+    beatlesSong();
+    reset_state();
+    // dim_led_Green();
+    switch_state_down = 1;
+    break;
+    
+  case 4:
     //Stop music
     buzzer_set_period(0);
+    reset_state();
     switch_state_down = 0;
+    break;
   }
+
   if(switch_state_down){
     switch_state_changed = 1;
     led_update();
-}
+  }
   else {
     switch_state_changed = 1;
     led_update();
     dim_led();
   }
+}
+
+void dim_led_Green(){
+
+  unsigned int j;
+
+  for(j = 1; j < 1200; j++){    // Increasing Intensity
+      P1OUT |= LED_GREEN;         // LED ON
+      delay(j);                 // Delay for ON Time
+      P1OUT &= ~LED_GREEN;        // LED OFF
+      delay(1200-j);           // OFF Time = Period - ON Time
+    }
+  
+  for(j = 1200; j > 1; j--){    // Decreasing Intensity
+      P1OUT |= LED_GREEN;         // LED ON
+      delay(j);               // Delay for ON Time
+      P1OUT &= ~LED_GREEN;        // LED OFF
+      delay(1200-j);           // OFF Time = Period - ON Time
+    }
+  switch_state_changed = 0;
 }
 
 void dim_led(){
@@ -82,10 +143,10 @@ void dim_led(){
 void delay(unsigned int t){          // Custom delay function
   unsigned int i;
   for(i = t; i > 0; i--)
-    __delay_cycles(1);          // __delay_cycles accepts only constants !
+    __delay_cycles(1);          // __delay_cycles accepts only constants
 }
 
-void toggle() {
+/*void toggle() {
   static char state = 0;
   switch (state) {
   case 0:
@@ -112,15 +173,10 @@ void toggle() {
     break;
   }
 }
-void binary_counter(){
-  for(;;){
-    P1OUT = (BIT0 & BIT6);
-    __delay_cycles(1000000);
-    P1OUT = BIT6;
-    __delay_cycles(1000000);
-    P1OUT = BIT0;
-    __delay_cycles(1000000);
-    P1OUT = (BIT0 ^ BIT6);
-    __delay_cycles(1000000);
-  }
+*/
+
+void reset_state() {
+  red_on = 0;
+  green_on = 0;
+  led_update();
 }
