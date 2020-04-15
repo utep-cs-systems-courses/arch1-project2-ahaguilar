@@ -23,3 +23,5 @@ the toy is "off".
 
 
 To clean project use make clean.
+
+You may use mspdebug rf2500 "erase" to clear the program from the MSP430.
