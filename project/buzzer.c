@@ -92,7 +92,7 @@ void beatlesSong(){
   case 13:
   case 16:
   case 32:
-  case 41:buzzer_set_period(637); if(counterBeatles==41){ counterBeatles = 0; } else{ counterBeatle          s++;}; break;  // (1/(frequency #)/2); n4
+  case 41:buzzer_set_period(637); if(counterBeatles==41){ counterBeatles = 0; } else{ counterBeatles++;}; break;  // (1/(frequency #)/2); n4
   case 3:
   case 8:
   case 15:
